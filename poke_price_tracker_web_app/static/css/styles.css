@@ -127,6 +127,8 @@ h1 {
     transform: scale(1.1);
 }
 
+
+
 .suggestion-item {
     text-align: center;
     background-color: #fff; /* Fond blanc */
@@ -177,7 +179,7 @@ h1 {
 .suggestions-animation.show {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 0.2s; /* Ajoute un délai à l'effet d'opacité */
+    transition-delay: 1s; /* Ajoute un délai à l'effet d'opacité */
 }
 
 
