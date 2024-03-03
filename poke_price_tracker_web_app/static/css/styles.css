@@ -34,7 +34,7 @@ body {
     justify-content: center;
     height: 50%;
     position: absolute;
-    top: 100px;
+    top: 200px;
     left: 0;
     width: 100%;
 }
@@ -127,8 +127,6 @@ h1 {
     transform: scale(1.1);
 }
 
-
-
 .suggestion-item {
     text-align: center;
     background-color: #fff; /* Fond blanc */
@@ -138,11 +136,12 @@ h1 {
     cursor: pointer; /* Curseur de pointage */
     transition: transform 0.3s ease; /* Animation de transformation au survol */
     margin-bottom: 5px; /* Marge en bas pour l'espacement */
+    margin-top : 10px
 }
 
 /* Style pour les suggestions lorsqu'elles sont survolées */
 .suggestion-item:hover {
-    
+    background-color: #f0f0f0; /* Couleur de fond lorsque survolé */
     transform: scale(1.05); /* Légère augmentation de la taille au survol */
     transition: transform 0.3s ease;
 } 
@@ -179,10 +178,8 @@ h1 {
 .suggestions-animation.show {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 1s; /* Ajoute un délai à l'effet d'opacité */
+    transition-delay: 0.2s; /* Ajoute un délai à l'effet d'opacité */
 }
-
-
 
 
 

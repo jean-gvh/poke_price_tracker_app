@@ -17,19 +17,9 @@
         $(document).ready(function () {
             var selectedImageLink = "";
             var box = $(".box");
-            var container = $(".container");
 
             $("#pokemon-search").on("input", function () {
                 var searchTerm = $(this).val();
-
-                if (searchTerm.length >= 1) {
-                animateContainerUp();
-                }
-
-                if (searchTerm.length < 1) {
-                    animateContainerDown();
-                }
-
 
                 // Vérifier si la longueur du terme de recherche est d'au moins 2 caractères
                 if (searchTerm.length >= 2) {
@@ -39,13 +29,13 @@
                         updateSuggestions(data);
 
                         // Animer le déplacement du conteneur vers le haut
-                        
+                        animateContainerUp();
                     });
                 } else {
                     // Si la longueur du terme de recherche est inférieure à 2, videz les suggestions
                     $("#suggestions-container").empty();
 
-                    
+                    animateContainerDown();
                 }
             
 
@@ -73,17 +63,6 @@
                 suggestionsContainer.append(suggestionHTML);
             }); 
         } 
-
-
-        // Fonction pour animer le déplacement du conteneur vers le haut
-        function animateContainerUp() {
-                container.animate({ top: '50px' }, 500); // Vous pouvez ajuster la durée et la distance ici
-            }
-
-            // Fonction pour animer le retour du conteneur à sa position d'origine
-            function animateContainerDown() {
-                container.animate({ top: '100px' }, 500); // Vous pouvez ajuster la durée et la distance ici
-            }
 
         $(document).on('click', '.suggestion-item', function () {
             var selectedImageLink = $(this).find('img').attr('src');
