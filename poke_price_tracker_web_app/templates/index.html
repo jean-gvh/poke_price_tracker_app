@@ -15,6 +15,7 @@
     <script>
         $(document).ready(function () {
             var selectedImageLink = "";
+            var box = $(".box");
 
             $("#pokemon-search").autocomplete({
                 source: function (request, response) {
@@ -50,6 +51,26 @@
                 searchContainer.css('display', (searchContainer.css('display') === 'none') ? 'flex' : 'none');
             });
 
+            box.on('mouseenter', function () {
+                gsap.to(box, { width: 350, duration: 0.5 });
+            });
+
+            box.on('mouseleave', function () {
+                if (!$('#pokemon-search').is(':focus') ) {
+                    gsap.to(box, { width: 300, duration: 0.5 });
+                }
+            });
+
+            box.on('transitionend', function () {
+                $(this).css('width', $(this).width());
+            });
+
+            box.on('focusout', function () {
+                if ($('#pokemon-search').val().trim() === '') {
+                    gsap.to(box, { width: 300, duration: 0.5 });
+                }
+            });
+
             $(document).on('click', function (event) {
                 var searchIcon = $("#search-icon");
                 var container = $(".container");
@@ -62,6 +83,7 @@
                 }
             });
         });
+
     </script>
 </head>
 

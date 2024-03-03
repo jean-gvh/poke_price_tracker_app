@@ -51,9 +51,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('background.jpg'); /* Remplacez par le lien de votre image */
+    background-image: url('https://th.bing.com/th/id/OIG1.w00H0SOTe7k7HZz91apI?w=1024&h=1024&rs=1&pid=ImgDetMain'); /* Remplacez par le lien de votre image */
     background-size: cover;
-    filter: blur(5px);
+    filter: blur(7px) brightness(0.75); /* Ajustez la valeur de brightness selon vos préférences */
     z-index: -1;
 }
 
@@ -89,17 +89,18 @@ h1 {
     align-items: center;
     padding: 10px;
     position: relative;
-    transition: width 0.5s ease, box-shadow 0.5s ease;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: width 0.5s ease, box-shadow 0.5s ease;
 }
-/* Animation pour la barre de recherche */
+
+/* Animation pour la barre de recherche uniquement lorsqu'elle est survolée */
 .box:hover {
-    width: 350px; /* Ajustez la largeur au besoin */
+    width: 350px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .box > i, #pokemon-search {
-    transition: all 0.3s ease; /* Animation de transition */
+    transition: all 0.3s ease;
 }
 
 .box > i {
