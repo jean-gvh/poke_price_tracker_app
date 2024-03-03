@@ -64,6 +64,24 @@ def autocomplete_pokemon():
     suggestions = functions.get_pokemon_suggestions(term)  # Obtenir les suggestions de noms de Pokémon
     return jsonify(suggestions) 
 
+@app.route('/pokemon_details/<pokemon_name>', methods=['GET'])
+def pokemon_details(pokemon_name):
+    # Requête pour obtenir les informations sur les ventes du Pokémon spécifié
+    session = Session()
+    pokemon_sales = session.query(EbaySalesData).options(joinedload('pokemon_set')).filter(EbaySalesData.card_name == pokemon_name).all()
+    session.close()
+
+    # Calcul des KPIs
+    num_sales = len(pokemon_sales)
+    avg_price = round(sum(sale.card_price_EUR for sale in pokemon_sales) / num_sales, 2) if num_sales > 0 else 0
+    max_price = max(sale.card_price_EUR for sale in pokemon_sales) if num_sales > 0 else 0
+    min_price = min(sale.card_price_EUR for sale in pokemon_sales) if num_sales > 0 else 0
+
+    kpis = {'num_sales': num_sales, 'avg_price': avg_price, 'max_price': max_price, 'min_price': min_price}
+
+    return render_template('results.html', pokemon_name=pokemon_name, pokemon_sales=pokemon_sales, kpis=kpis, selectedImageLink = request.args.get('selectedImageLink', ''))
+
+
 
 
 if __name__ == '__main__':

@@ -63,5 +63,5 @@ def get_pokemon_suggestions(term):
                 'set_name': row['set_name'],
                 'bloc_name': row['bloc_name']
             })
-    suggestions = suggestions[:10]
+    suggestions = suggestions[:4]
     return suggestions

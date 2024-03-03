@@ -1,33 +1,3 @@
-/* CSS pour l'autocomplétion des suggestions */
-.ui-autocomplete {
-    max-height: 400px;
-    max-inline-size: 390px; /* Hauteur maximale des suggestions */
-    overflow-y: auto; /* Ajouter une barre de défilement verticale si nécessaire */
-}
-
-/* CSS pour chaque élément de suggestion */
-.ui-menu-item {
-    display: inline-table; /* Afficher les suggestions en ligne */
-    width: 8%; /* Largeur de chaque suggestion pour 4 colonnes */
-    text-align: center; /* Centrer le contenu */
-    padding: 8px; /* Ajouter un peu de marge intérieure */
-    cursor: pointer;
-}
-
-.ui-menu-item span.card-name {
-    font-weight: bold;
-}
-
-.ui-menu-item img {
-    max-width: 80px;
-    height: auto;
-}
-
-/* Style pour les suggestions lorsqu'elles sont survolées */
-.ui-menu-item:hover {
-    background-color: #f0f0f0; /* Couleur de fond lorsque survolé */
-}
-
 body {
     margin: 0;
     font-family: 'Helvetica', 'Arial', sans-serif;
@@ -51,38 +21,61 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://th.bing.com/th/id/OIG1.w00H0SOTe7k7HZz91apI?w=1024&h=1024&rs=1&pid=ImgDetMain'); /* Remplacez par le lien de votre image */
+    background-image: url('https://th.bing.com/th/id/OIG1.ZVapKYBozI.GDKwE3hnf?pid=ImgGn');
     background-size: cover;
-    filter: blur(7px) brightness(0.75); /* Ajustez la valeur de brightness selon vos préférences */
+    filter: blur(8px) brightness(0.6);
     z-index: -1;
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 1;
+    top: 200px;
+    left: 0;
+    width: 100%;
+}
+
+#search-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Nouveau style pour les suggestions directement sur la page */
+#suggestions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
 }
 
 h1 {
     color: #ffffff;
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 60px;
+    margin-bottom: 5px;
+    padding-bottom: 20px;
+    font-style: italic;
+    font-family: 'Kanit', sans-serif;
+    letter-spacing: 1px;
 }
 
 .search-form {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* Ajustement de l'espacement par rapport à la h1 */
-    
+    margin-top: 8px;
 }
 
 .box {
-    width: 300px;
-    height: 40px;
+    width: 350px;
+    height: 51px;
     background-color: white;
     border-radius: 20px;
     display: flex;
@@ -90,12 +83,11 @@ h1 {
     padding: 10px;
     position: relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: width 0.5s ease, box-shadow 0.5s ease;
+    transition: width 1.2s ease, box-shadow 1.2s ease;
 }
 
-/* Animation pour la barre de recherche uniquement lorsqu'elle est survolée */
 .box:hover {
-    width: 350px;
+    width: 600px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -114,21 +106,56 @@ h1 {
     height: 100%;
     border: none;
     outline: none;
-    font-size: 16px;
+    font-size: 20px;
     padding-left: 10px;
-} 
+}
 
-/* Ajout de styles pour le bouton de recherche */
 #search-submit {
+    transition: transform 0.3s ease;
     border: none;
     background: none;
     font-size: 20px;
     color: #777;
     cursor: pointer;
     outline: none;
-    padding: 0; /* Ajout de cette ligne pour enlever le padding par défaut du bouton */
+    padding: 0;
 }
 
 #search-submit:hover {
     color: #333;
+    transform: scale(1.1);
+}
+
+.suggestion-item {
+    text-align: center;
+    background-color: #fff; /* Fond blanc */
+    border-radius: 15px; /* Bords arrondis */
+    padding: 5px; /* Espace intérieur */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    cursor: pointer; /* Curseur de pointage */
+    transition: transform 0.3s ease; /* Animation de transformation au survol */
+    margin-bottom: 3px; /* Marge en bas pour l'espacement */
+}
+
+/* Style pour les suggestions lorsqu'elles sont survolées */
+.suggestion-item:hover {
+    background-color: #f0f0f0; /* Couleur de fond lorsque survolé */
+    transform: scale(1.05); /* Légère augmentation de la taille au survol */
+}
+
+.suggestion-item img {
+    max-width: 30%;
+    
+}
+
+.suggestion-item .card-name {
+    font-weight: bold;
+    display: block;
+    margin-top: 5px;
+}
+
+.suggestion-item .set-info {
+    display: block;
+    margin-top: 2px;
+    color: #888;
 }

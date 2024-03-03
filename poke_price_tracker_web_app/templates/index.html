@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -17,29 +18,48 @@
             var selectedImageLink = "";
             var box = $(".box");
 
-            $("#pokemon-search").autocomplete({
-                source: function (request, response) {
-                    $.getJSON("{{ url_for('autocomplete_pokemon') }}", { term: request.term }, function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.card_name,
-                                value: item.card_name,
-                                imgSrc: item.img_link,
-                                set: item.set_name,
-                                block: item.bloc_name
-                            };
-                        }));
-                    });
-                },
-                minLength: 2,
-                select: function (event, ui) {
-                    $('#selectedImageLink').val(ui.item.imgSrc);
-                },
-            }).autocomplete('instance')._renderItem = function (ul, item) {
-                return $('<li>')
-                    .append('<div class="pokemon-item"><img src="' + item.imgSrc + '"><span class="card-name">' + item.label + '</span><br><span class="set-info">' + item.set + ' - ' + item.block + '</span></div>')
-                    .appendTo(ul);
-            };
+            $("#pokemon-search").on("input", function () {
+            var searchTerm = $(this).val();
+            
+            // Faites une requête AJAX pour obtenir les suggestions du serveur
+            $.getJSON("{{ url_for('autocomplete_pokemon') }}", { term: searchTerm }, function (data) {
+                // Mettez à jour le contenu du conteneur des suggestions avec les nouvelles suggestions
+                updateSuggestions(data);
+            });
+
+            $(document).on('click', '.suggestion-item', function () {
+            var selectedImageLink = $(this).find('img').attr('src');
+            var pokemonName = $(this).find('.card-name').text();
+
+            // Redirigez vers la page results.html avec les données du Pokémon sélectionné
+            window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName + "?selectedImageLink=" + selectedImageLink;
+        });
+        });
+
+        // Fonction pour mettre à jour le contenu des suggestions
+        function updateSuggestions(suggestions) {
+            var suggestionsContainer = $("#suggestions-container");
+            suggestionsContainer.empty(); // Efface les anciennes suggestions
+
+            // Boucle sur les suggestions et ajoute chaque suggestion au conteneur
+            $.each(suggestions, function (index, suggestion) {
+                var suggestionHTML = '<div class="suggestion-item">' +
+                    '<img src="' + suggestion.img_link + '" alt="' + suggestion.card_name + '">' +
+                    '<span class="card-name">' + suggestion.card_name + '</span>' +
+                    '<br>' +
+                    '<span class="set-info">' + suggestion.set_name + ' - ' + suggestion.bloc_name + '</span>' +
+                    '</div>';
+                suggestionsContainer.append(suggestionHTML);
+            }); 
+        } 
+
+        $(document).on('click', '.suggestion-item', function () {
+            var selectedImageLink = $(this).find('img').attr('src');
+            var pokemonName = $(this).find('.card-name').text();
+
+            // Redirigez vers la page results.html avec les données du Pokémon sélectionné
+            window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName;
+        });
 
             $("#search-icon").on('click', function () {
                 var searchIcon = $("#search-icon");
@@ -52,13 +72,11 @@
             });
 
             box.on('mouseenter', function () {
-                gsap.to(box, { width: 350, duration: 0.5 });
+                gsap.to(box, { width: 350, duration: 1.0 });
             });
 
             box.on('mouseleave', function () {
-                if (!$('#pokemon-search').is(':focus') ) {
-                    gsap.to(box, { width: 300, duration: 0.5 });
-                }
+                gsap.to(box, { width: 300, duration: 1.0 });
             });
 
             box.on('transitionend', function () {
@@ -66,9 +84,7 @@
             });
 
             box.on('focusout', function () {
-                if ($('#pokemon-search').val().trim() === '') {
-                    gsap.to(box, { width: 300, duration: 0.5 });
-                }
+                gsap.to(box, { width: 300, duration: 3.0 });
             });
 
             $(document).on('click', function (event) {
@@ -83,7 +99,6 @@
                 }
             });
         });
-
     </script>
 </head>
 
@@ -96,22 +111,23 @@
     </div>
 
     <!-- Remplacez le lien par votre fond d'écran -->
-    <img id="background" src="https://th.bing.com/th/id/OIG1.w00H0SOTe7k7HZz91apI?w=1024&h=1024&rs=1&pid=ImgDetMain" alt="Fond d'écran">
+    <img id="background" src="https://digwallpapers.com/wallpapers/full/9/2/c/71534-1920x1200-pokemon-tcg-wallpaper-image-desktop-hd.jpg" alt="Fond d'écran">
 
     <div class="container">
         <h1>Suivez le prix de votre carte !</h1>
         <form action="/" method="POST" class="search-form">
             <input type="hidden" name="selectedImageLink" id="selectedImageLink" value="">
-            
             <div class="box">
-                <i class="fa fa-search" aria-hidden="true"></i>
                 <input type="text" id="pokemon-search" name="pokemon_name" placeholder="Recherchez un Pokémon...">
-                <button id="search-submit" type="submit"><i class="material-icons">search</i></button>
-
+                <button id="search-submit" type="submit">
+                    <img src="{{ url_for('static', filename='images/poke_loupe.png') }}" alt="Icône de recherche" style="width: 35px; height: 35px; padding-top: 5px; padding-right: 5px;">
+                </button>
             </div>
         </form>
+
+        <!-- Conteneur des suggestions -->
+        <div id="suggestions-container"></div>
     </div>
 </body>
 
 </html>
-
