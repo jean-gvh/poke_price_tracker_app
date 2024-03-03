@@ -34,7 +34,7 @@ body {
     justify-content: center;
     height: 50%;
     position: absolute;
-    top: 200px;
+    top: 150px;
     left: 0;
     width: 100%;
 }
@@ -130,11 +130,11 @@ h1 {
     text-align: center;
     background-color: #fff; /* Fond blanc */
     border-radius: 15px; /* Bords arrondis */
-    padding: 5px; /* Espace intérieur */
+    padding: 20px; /* Espace intérieur */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
     cursor: pointer; /* Curseur de pointage */
     transition: transform 0.3s ease; /* Animation de transformation au survol */
-    margin-bottom: 3px; /* Marge en bas pour l'espacement */
+    margin-bottom: 15px; /* Marge en bas pour l'espacement */
 }
 
 /* Style pour les suggestions lorsqu'elles sont survolées */
@@ -144,18 +144,22 @@ h1 {
 }
 
 .suggestion-item img {
-    max-width: 30%;
-    
+    max-width: 100%;  /* Ajustez la taille maximale selon vos besoins */
+    max-height: 250px;  /* Ajustez la hauteur maximale selon vos besoins */
 }
 
 .suggestion-item .card-name {
     font-weight: bold;
     display: block;
     margin-top: 5px;
+    font-size: 16px; /* Taille de police pour le nom de la carte */
 }
 
 .suggestion-item .set-info {
     display: block;
-    margin-top: 2px;
+    margin-top: 5px;
+    font-size: 12px; /* Taille de police pour les informations sur le set et le bloc */
     color: #888;
 }
+
+
