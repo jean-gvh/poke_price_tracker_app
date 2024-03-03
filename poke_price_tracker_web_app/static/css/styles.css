@@ -1,31 +1,53 @@
 body {
     margin: 0;
-    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-family: 'Kanit', sans-serif;
     overflow: hidden;
 }
 
+
+
 .navbar {
-    background-color: #1a1a1a;
-    color: #fff;
-    font-size: 18px;
-    padding: 15px;
-    text-align: center;
     position: fixed;
-    width: 100%;
+    top: 0;
+    right: 0;
+    padding: 15px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
     z-index: 1000;
 }
 
-#background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://th.bing.com/th/id/OIG1.ZVapKYBozI.GDKwE3hnf?pid=ImgGn');
-    background-size: cover;
-    filter: blur(8px) brightness(0.6);
-    z-index: -1;
+.navbar span {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: color 0.3s ease;
 }
+
+.navbar span:hover {
+    color: #42a5f5;
+}
+
+
+
+#background-container {
+    display: flex;
+    filter: blur(8px) brightness(0.6);
+    width: 200%; /* Largeur totale = 100% par image * nombre d'images */
+    transition: transform 2s ease; /* Ajoutez une transition pour un effet plus fluide */
+}
+
+.background-image {
+    flex: 1;
+    height: 100vh; /* Hauteur de l'écran */
+    background-size: cover;
+    background-position: center;
+}
+
+
+
+
 
 .container {
     display: flex;

@@ -10,13 +10,23 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/theme.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/jquery.cycle2.min.js"></script>
+    
 
     <script>
         $(document).ready(function () {
-            var selectedImageLink = "";
-            var box = $(".box");
+            var currentIndex = 0;
+            var totalImages = $(".background-image").length;
+
+            function changeBackground() {
+                $("#background-container").css("transform", "translateX(" + -currentIndex * 100 / totalImages + "%)");
+                currentIndex = (currentIndex + 1) % totalImages;
+            }
+
+            setInterval(changeBackground, 10000); // Changez d'image toutes les 5 secondes
+
 
             $("#pokemon-search").on("input", function () {
                 var searchTerm = $(this).val();
@@ -115,14 +125,17 @@
 
 <body>
     <div class="navbar">
-        <!-- Ajoutez vos onglets ici -->
-        <span>Cartes</span>
-        <span>Mon compte</span>
-        <!-- Ajoutez d'autres onglets au besoin -->
+        <span>Accueil</span>
+        <span>À propos</span>
+        <span>Contact</span>
     </div>
 
-    <!-- Remplacez le lien par votre fond d'écran -->
-    <img id="background" src="https://digwallpapers.com/wallpapers/full/9/2/c/71534-1920x1200-pokemon-tcg-wallpaper-image-desktop-hd.jpg" alt="Fond d'écran">
+    <div id="background-container">
+        <div class="background-image" style="background-image: url('https://digwallpapers.com/wallpapers/full/9/2/c/71534-1920x1200-pokemon-tcg-wallpaper-image-desktop-hd.jpg');"></div>
+        <div class="background-image" style="background-image: url('https://i.redd.it/extended-card-art-wallpapers-part-3-including-a-dual-v0-bjk6brsi9gob1.jpg?width=3840&format=pjpg&auto=webp&s=cf2d6cdb345ae1212f6201ee95a2e97d42aae251');"></div>
+        
+    </div>
+
 
     <div class="container">
         <h1>Suivez le prix de votre carte !</h1>
