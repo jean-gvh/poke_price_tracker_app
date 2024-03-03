@@ -19,21 +19,28 @@
             var box = $(".box");
 
             $("#pokemon-search").on("input", function () {
-            var searchTerm = $(this).val();
+                var searchTerm = $(this).val();
+
+                // Vérifier si la longueur du terme de recherche est d'au moins 2 caractères
+                if (searchTerm.length >= 2) {
+                    // Faites une requête AJAX pour obtenir les suggestions du serveur
+                    $.getJSON("{{ url_for('autocomplete_pokemon') }}", { term: searchTerm }, function (data) {
+                        // Mettez à jour le contenu du conteneur des suggestions avec les nouvelles suggestions
+                        updateSuggestions(data);
+                    });
+                } else {
+                    // Si la longueur du terme de recherche est inférieure à 2, videz les suggestions
+                    $("#suggestions-container").empty();
+                }
             
-            // Faites une requête AJAX pour obtenir les suggestions du serveur
-            $.getJSON("{{ url_for('autocomplete_pokemon') }}", { term: searchTerm }, function (data) {
-                // Mettez à jour le contenu du conteneur des suggestions avec les nouvelles suggestions
-                updateSuggestions(data);
+
+                $(document).on('click', '.suggestion-item', function () {
+                var selectedImageLink = $(this).find('img').attr('src');
+                var pokemonName = $(this).find('.card-name').text();
+
+                // Redirigez vers la page results.html avec les données du Pokémon sélectionné
+                window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName + "?selectedImageLink=" + selectedImageLink;
             });
-
-            $(document).on('click', '.suggestion-item', function () {
-            var selectedImageLink = $(this).find('img').attr('src');
-            var pokemonName = $(this).find('.card-name').text();
-
-            // Redirigez vers la page results.html avec les données du Pokémon sélectionné
-            window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName + "?selectedImageLink=" + selectedImageLink;
-        });
         });
 
         // Fonction pour mettre à jour le contenu des suggestions
@@ -46,7 +53,6 @@
                 var suggestionHTML = '<div class="suggestion-item">' +
                     '<img src="' + suggestion.img_link + '" alt="' + suggestion.card_name + '">' +
                     '<span class="card-name">' + suggestion.card_name + '</span>' +
-                    '<br>' +
                     '<span class="set-info">' + suggestion.set_name + ' - ' + suggestion.bloc_name + '</span>' +
                     '</div>';
                 suggestionsContainer.append(suggestionHTML);

@@ -34,7 +34,7 @@ body {
     justify-content: center;
     height: 50%;
     position: absolute;
-    top: 150px;
+    top: 100px;
     left: 0;
     width: 100%;
 }
@@ -58,7 +58,7 @@ body {
 
 h1 {
     color: #ffffff;
-    font-size: 60px;
+    font-size: 70px;
     margin-bottom: 5px;
     padding-bottom: 20px;
     font-style: italic;
@@ -71,6 +71,7 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-top: 8px;
+    padding-bottom: 10px;
 }
 
 .box {
@@ -82,7 +83,7 @@ h1 {
     align-items: center;
     padding: 10px;
     position: relative;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: width 1.2s ease, box-shadow 1.2s ease;
 }
 
@@ -134,32 +135,53 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
     cursor: pointer; /* Curseur de pointage */
     transition: transform 0.3s ease; /* Animation de transformation au survol */
-    margin-bottom: 15px; /* Marge en bas pour l'espacement */
+    margin-bottom: 5px; /* Marge en bas pour l'espacement */
 }
 
 /* Style pour les suggestions lorsqu'elles sont survolées */
 .suggestion-item:hover {
-    background-color: #f0f0f0; /* Couleur de fond lorsque survolé */
+    
     transform: scale(1.05); /* Légère augmentation de la taille au survol */
-}
+    transition: transform 0.3s ease;
+} 
+
 
 .suggestion-item img {
     max-width: 100%;  /* Ajustez la taille maximale selon vos besoins */
     max-height: 250px;  /* Ajustez la hauteur maximale selon vos besoins */
+    padding-bottom: 8px;
 }
 
 .suggestion-item .card-name {
     font-weight: bold;
     display: block;
-    margin-top: 5px;
+    margin-top: 2px;  /* Ajustez cette valeur selon vos préférences */
+    margin-bottom: 1px;
     font-size: 16px; /* Taille de police pour le nom de la carte */
 }
 
 .suggestion-item .set-info {
     display: block;
-    margin-top: 5px;
+    margin-top: 8px;  /* Ajustez cette valeur selon vos préférences */
+    margin-bottom: 1px;
     font-size: 12px; /* Taille de police pour les informations sur le set et le bloc */
     color: #888;
 }
+
+.suggestions-animation {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.8s ease, transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.suggestions-animation.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s; /* Ajoute un délai à l'effet d'opacité */
+}
+
+
+
+
 
 
