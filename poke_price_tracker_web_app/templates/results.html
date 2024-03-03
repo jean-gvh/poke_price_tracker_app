@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles2.css') }}">
+    <title>Données de ventes {{ pokemon_name }} </title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <h1>Données de ventes de {{ pokemon_name }}</h1>
+        <div class="info-container">
+            <div class="left-section">
+                <!-- KPIS -->
+                <div class="kpi">
+                    <h2>Indicateurs de Performance:</h2>
+                    <p>Nombre de ventes: {{ kpis.num_sales }}</p>
+                    <p>Prix moyen: {{ kpis.avg_price }}</p>
+                    <p>Prix maximum: {{ kpis.max_price }}</p>
+                    <p>Prix minimum: {{ kpis.min_price }}</p>
+                </div>
+            </div>
+            <div class="right-section">
+                <!-- Image -->
+                <img src="{{ selectedImageLink }}" alt="Selected Pokemon Image" id="pokemon-image" onmouseover="zoomIn(this)" onmouseout="zoomOut(this)">
+            </div>
+        </div>
+        <!-- Sales Chart -->
+        <div id="sales-chart-container"></div>
+
+        <script>
+            var selectedImageLink = "{{ selectedImageLink }}";
+            document.addEventListener("DOMContentLoaded", function () {
+                // Récupère les données de vente de manière asynchrone
+                fetch("{{ url_for('index') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams({ 'pokemon_name': '{{ pokemon_name }}', 'selectedImageLink': selectedImageLink })
+
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Utilise les données pour générer le graphique
+                        var salesData = data;
+
+                        // Convertit les dates en objet moment.js
+                        salesData.sales.forEach(sale => {
+                            sale.sold_date = moment(sale.sold_date);
+                        });
+
+                        // Regroupe les ventes par jour et calcule la moyenne des prix
+                        var groupedData = salesData.sales.reduce((result, sale)=> {
+                            var dateStr = sale.sold_date.format('YYYY-MM-DD');
+                            if (!result[dateStr]) {
+                                result[dateStr] = { prices: [sale.card_price_EUR], date: dateStr };
+                            } else {
+                                result[dateStr].prices.push(sale.card_price_EUR);
+                            }
+                            return result;
+                        }, {});
+
+                        // Calcule la moyenne des prix pour chaque jour
+                        var averagedData = Object.values(groupedData).map(group => {
+                            return {
+                                date: group.date,
+                                averagePrice: group.prices.reduce((sum, price) => sum + price, 0) / group.prices.length.toFixed(2)
+
+
+
+                            };
+                        });
+
+                        // Trie les données par date
+                        averagedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                        var trace = {
+                            x: averagedData.map(entry => entry.date),
+                            y: averagedData.map(entry => entry.averagePrice),
+                            type: 'scatter',
+                            mode: 'lines+markers',
+                            name: 'Prix moyen en EUR.',
+                            hoverinfo: 'text',  // Indique que le texte doit être utilisé pour le survol
+                            text: averagedData.map(entry => `Jour: ${moment(entry.date).format('DD-MM-YYYY')}<br>Prix: ${Number(entry.averagePrice).toFixed(2)} €`),
+
+
+
+                        };
+
+                        var layout = {
+                            title: 'Données de ventes pour ' + salesData.pokemon_name,
+                            xaxis: {
+                                title: 'Sold Date',
+                                tickformat: '%b %Y',  // Format de date pour afficher le mois et l'année
+                                tickangle: -45,
+                                tickfont: {
+                                    size: 10
+                                }
+                            },
+                            yaxis: {
+                                title: 'Prix en EUR.'
+                            },
+                            hovermode: 'closest',  // Pour afficher le point le plus proche lors du survol
+                        };
+
+                        var plotData = [trace];
+
+                        Plotly.newPlot('sales-chart-container', plotData, layout);
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+            // Fonction pour zoomer l'image
+            function zoomIn(element) {
+                gsap.to(element, { scale: 1.1, duration: 0.3 });
+            }
+
+            // Fonction pour dézoomer l'image
+            function zoomOut(element) {
+                gsap.to(element, { scale: 1, duration: 0.3 });
+            }
+        </script>
+    </div>
+</body>
+
+</html>

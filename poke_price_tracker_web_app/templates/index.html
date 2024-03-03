@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var selectedImageLink = "";
+
+            $("#pokemon-search").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("{{ url_for('autocomplete_pokemon') }}", { term: request.term }, function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.card_name,
+                                value: item.card_name,
+                                imgSrc: item.img_link,
+                                set: item.set_name,
+                                block: item.bloc_name
+                            };
+                        }));
+                    });
+                },
+                minLength: 2,
+                select: function (event, ui) {
+                    $('#selectedImageLink').val(ui.item.imgSrc);
+                },
+            }).autocomplete('instance')._renderItem = function (ul, item) {
+                return $('<li>')
+                    .append('<div class="pokemon-item"><img src="' + item.imgSrc + '"><span class="card-name">' + item.label + '</span><br><span class="set-info">' + item.set + ' - ' + item.block + '</span></div>')
+                    .appendTo(ul);
+            };
+
+            $("#search-icon").on('click', function () {
+                var searchIcon = $("#search-icon");
+                var container = $(".container");
+                var searchContainer = $(".search-form");
+
+                gsap.to(searchIcon, { scale: 1.2, duration: 0.3 });
+                gsap.to(container, { x: -300, duration: 0.3 });
+                searchContainer.css('display', (searchContainer.css('display') === 'none') ? 'flex' : 'none');
+            });
+
+            $(document).on('click', function (event) {
+                var searchIcon = $("#search-icon");
+                var container = $(".container");
+                var searchContainer = $(".search-form");
+
+                if (!searchContainer.is(event.target) && searchContainer.has(event.target).length === 0 && !searchIcon.is(event.target)) {
+                    gsap.to(searchIcon, { scale: 1, duration: 0.3 });
+                    gsap.to(container, { x: 0, duration: 0.3 });
+                    searchContainer.css('display', 'none');
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <!-- Ajoutez vos onglets ici -->
+        <span>Cartes</span>
+        <span>Mon compte</span>
+        <!-- Ajoutez d'autres onglets au besoin -->
+    </div>
+
+    <!-- Remplacez le lien par votre fond d'écran -->
+    <img id="background" src="https://th.bing.com/th/id/OIG1.w00H0SOTe7k7HZz91apI?w=1024&h=1024&rs=1&pid=ImgDetMain" alt="Fond d'écran">
+
+    <div class="container">
+        <h1>Suivez le prix de votre carte !</h1>
+        <form action="/" method="POST" class="search-form">
+            <input type="hidden" name="selectedImageLink" id="selectedImageLink" value="">
+            
+            <div class="box">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="text" id="pokemon-search" name="pokemon_name" placeholder="Recherchez un Pokémon...">
+                <button id="search-submit" type="submit"><i class="material-icons">search</i></button>
+
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+

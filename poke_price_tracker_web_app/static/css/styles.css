@@ -1,0 +1,133 @@
+/* CSS pour l'autocomplétion des suggestions */
+.ui-autocomplete {
+    max-height: 400px;
+    max-inline-size: 390px; /* Hauteur maximale des suggestions */
+    overflow-y: auto; /* Ajouter une barre de défilement verticale si nécessaire */
+}
+
+/* CSS pour chaque élément de suggestion */
+.ui-menu-item {
+    display: inline-table; /* Afficher les suggestions en ligne */
+    width: 8%; /* Largeur de chaque suggestion pour 4 colonnes */
+    text-align: center; /* Centrer le contenu */
+    padding: 8px; /* Ajouter un peu de marge intérieure */
+    cursor: pointer;
+}
+
+.ui-menu-item span.card-name {
+    font-weight: bold;
+}
+
+.ui-menu-item img {
+    max-width: 80px;
+    height: auto;
+}
+
+/* Style pour les suggestions lorsqu'elles sont survolées */
+.ui-menu-item:hover {
+    background-color: #f0f0f0; /* Couleur de fond lorsque survolé */
+}
+
+body {
+    margin: 0;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.navbar {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-size: 18px;
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('background.jpg'); /* Remplacez par le lien de votre image */
+    background-size: cover;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Ajustement de l'espacement par rapport à la h1 */
+    
+}
+
+.box {
+    width: 300px;
+    height: 40px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    transition: width 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* Animation pour la barre de recherche */
+.box:hover {
+    width: 350px; /* Ajustez la largeur au besoin */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.box > i, #pokemon-search {
+    transition: all 0.3s ease; /* Animation de transition */
+}
+
+.box > i {
+    font-size: 20px;
+    color: #777;
+    margin-right: 10px;
+}
+
+.box > input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding-left: 10px;
+} 
+
+/* Ajout de styles pour le bouton de recherche */
+#search-submit {
+    border: none;
+    background: none;
+    font-size: 20px;
+    color: #777;
+    cursor: pointer;
+    outline: none;
+    padding: 0; /* Ajout de cette ligne pour enlever le padding par défaut du bouton */
+}
+
+#search-submit:hover {
+    color: #333;
+}
