@@ -6,6 +6,7 @@ import os
 from google.cloud import storage
 import csv
 import functions
+import random
 
 # Configuration de l'application Flask
 app = Flask(__name__, '/static')
@@ -20,9 +21,6 @@ DB_NAME = 'test'
 # Créez une connexion à la base de données MySQL
 engine = create_engine(f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
 Session = sessionmaker(bind=engine)
-
-
-
 
 
 
@@ -81,6 +79,24 @@ def pokemon_details(pokemon_name):
 
     return render_template('results.html', pokemon_name=pokemon_name, pokemon_sales=pokemon_sales, kpis=kpis, selectedImageLink = request.args.get('selectedImageLink', ''))
 
+@app.route('/random_suggestions')
+def random_suggestions():
+    # Charger les données depuis le fichier CSV
+    csvfile = functions.get_pokemon_names()
+    csv_data = csvfile.decode('utf-8').splitlines()
+    reader = csv.DictReader(csv_data)
+    data = list(reader)
+
+    # Sélectionner une suggestion aléatoire
+    random_suggestion = random.choice(data)
+
+    # Retourner les données au format JSON
+    return jsonify({
+        'img_link': random_suggestion['img_link'],
+        'card_name': random_suggestion['card_name'],
+        'set_name': random_suggestion['set_name'],
+        'bloc_name': random_suggestion['bloc_name']
+    })
 
 
 

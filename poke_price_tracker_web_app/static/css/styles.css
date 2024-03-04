@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Kanit', sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 
@@ -177,6 +177,7 @@ h1 {
 
 .suggestion-item .card-name {
     font-weight: bold;
+    color: #2a2727;
     display: block;
     margin-top: 2px;  /* Ajustez cette valeur selon vos préférences */
     margin-bottom: 1px;
@@ -204,5 +205,83 @@ h1 {
 }
 
 
+#nouvelle-section-blanche {
+    position: relative;
+}
+
+#nouvelle-section-blanche img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: blur(10px);
+} 
 
 
+#texte-sur-image {
+    position: absolute;
+    top: 50%; /* Ajustez la position verticale du texte */
+    left: 10%; /* Ajustez la position horizontale du texte */
+    transform: translateY(-90%) translateX(-10%);
+    color: #fff; /* Couleur du texte */
+   
+    text-align: left;
+}
+
+#texte-sur-image h1 {
+    color: #ffffff;
+    font-size: 90px;
+    margin-bottom: 5px;
+    padding-bottom: 20px;
+    font-style: italic;
+    font-family: 'Kanit', sans-serif;
+    letter-spacing: 1px;
+}
+
+#texte-sur-image p {
+    font-size: 16px;
+}
+
+#espace-suggestions::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%; /* Ajustez la largeur selon vos besoins */
+    height: 80%;
+    transform: translateY(13%) translateX(-20%);
+
+    background-color: #fff; /* Couleur de fond pour l'espace des suggestions */
+    border-top-right-radius: 100%; /* Pour créer un cercle en haut à droite */
+    border-bottom-right-radius: 100%; /* Pour créer un cercle en bas à droite */
+    border-top-left-radius: 100%; /* Pour créer un cercle en haut à droite */
+    border-bottom-left-radius: 100%; 
+    z-index: 1; /* Assurez-vous que l'espace des suggestions est au-dessus de l'image */
+} 
+
+#suggestions-container2 {
+    position: absolute;
+    top: 10%; /* Ajustez la position verticale selon vos besoins */
+    left: 50%; /* Ajustez la position horizontale selon vos besoins */
+    transform: translateX(-50%);
+    width: 80%; /* Ajustez la largeur selon vos besoins */
+    height: 80%; /* Ajustez la hauteur selon vos besoins */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.suggestion-in-circle {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-in-circle img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+}

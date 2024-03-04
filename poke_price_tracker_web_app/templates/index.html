@@ -17,8 +17,10 @@
 
     <script>
         $(document).ready(function () {
+            updateRandomSuggestion();
             var currentIndex = 0;
             var totalImages = $(".background-image").length;
+            var box = $(".box");
 
             function changeBackground() {
                 $("#background-container").css("transform", "translateX(" + -currentIndex * 100 / totalImages + "%)");
@@ -73,6 +75,20 @@
                 suggestionsContainer.append(suggestionHTML);
             }); 
         } 
+        function updateRandomSuggestion() {
+            // Faire une requête Ajax pour obtenir une suggestion aléatoire
+            $.getJSON("/random_suggestions", function (data) {
+                // Mettre à jour la suggestion sur la page avec une classe spécifique
+                var suggestionHTML = '<div class="suggestion-item suggestion-in-circle">' +
+                    '<img src="' + data.img_link + '" alt="' + data.card_name + '">' +
+                    '<span class="card-name">' + data.card_name + '</span>' +
+                    '<span class="set-info">' + data.set_name + ' - ' + data.bloc_name + '</span>' +
+                    '</div>';
+
+                // Ajoutez l'élément au conteneur des suggestions
+                $('#suggestions-container2').html(suggestionHTML);
+            });
+        }
 
         $(document).on('click', '.suggestion-item', function () {
             var selectedImageLink = $(this).find('img').attr('src');
@@ -120,6 +136,8 @@
                 }
             });
         });
+    
+        
     </script>
 </head>
 
@@ -135,6 +153,7 @@
         <div class="background-image" style="background-image: url('https://i.redd.it/extended-card-art-wallpapers-part-3-including-a-dual-v0-bjk6brsi9gob1.jpg?width=3840&format=pjpg&auto=webp&s=cf2d6cdb345ae1212f6201ee95a2e97d42aae251');"></div>
         
     </div>
+    
 
 
     <div class="container">
@@ -151,7 +170,21 @@
 
         <!-- Conteneur des suggestions -->
         <div id="suggestions-container"></div>
+       
+
     </div>
+
+    <div id="nouvelle-section-blanche">
+        <img src="https://i.redd.it/g7bsmlohztva1.png" alt="Description de l'image">
+        <div id="texte-sur-image">
+            <h1>Explorer des cartes <br> Inconnues!</h1>
+        </div>
+        
+        <div id="espace-suggestions"></div>
+        <div id="suggestions-container2"></div>
+
+    </div>
+
 </body>
 
 </html>
