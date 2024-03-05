@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/theme.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/jquery.cycle2.min.js"></script>
-    
 
     <script>
         $(document).ready(function () {
@@ -27,85 +26,20 @@
                 currentIndex = (currentIndex + 1) % totalImages;
             }
 
-            setInterval(changeBackground, 10000); // Changez d'image toutes les 5 secondes
-
+            setInterval(changeBackground, 10000);
 
             $("#pokemon-search").on("input", function () {
                 var searchTerm = $(this).val();
 
-                // Vérifier si la longueur du terme de recherche est d'au moins 2 caractères
                 if (searchTerm.length >= 2) {
-                    // Faites une requête AJAX pour obtenir les suggestions du serveur
                     $.getJSON("{{ url_for('autocomplete_pokemon') }}", { term: searchTerm }, function (data) {
-                        // Mettez à jour le contenu du conteneur des suggestions avec les nouvelles suggestions
                         updateSuggestions(data);
-
-                        // Animer le déplacement du conteneur vers le haut
                         animateContainerUp();
                     });
                 } else {
-                    // Si la longueur du terme de recherche est inférieure à 2, videz les suggestions
                     $("#suggestions-container").empty();
-
                     animateContainerDown();
                 }
-            
-
-                $(document).on('click', '.suggestion-item', function () {
-                var selectedImageLink = $(this).find('img').attr('src');
-                var pokemonName = $(this).find('.card-name').text();
-
-                // Redirigez vers la page results.html avec les données du Pokémon sélectionné
-                window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName + "?selectedImageLink=" + selectedImageLink;
-            });
-        });
-
-        // Fonction pour mettre à jour le contenu des suggestions
-        function updateSuggestions(suggestions) {
-            var suggestionsContainer = $("#suggestions-container");
-            suggestionsContainer.empty(); // Efface les anciennes suggestions
-
-            // Boucle sur les suggestions et ajoute chaque suggestion au conteneur
-            $.each(suggestions, function (index, suggestion) {
-                var suggestionHTML = '<div class="suggestion-item">' +
-                    '<img src="' + suggestion.img_link + '" alt="' + suggestion.card_name + '">' +
-                    '<span class="card-name">' + suggestion.card_name + '</span>' +
-                    '<span class="set-info">' + suggestion.set_name + ' - ' + suggestion.bloc_name + '</span>' +
-                    '</div>';
-                suggestionsContainer.append(suggestionHTML);
-            }); 
-        } 
-        function updateRandomSuggestion() {
-            // Faire une requête Ajax pour obtenir une suggestion aléatoire
-            $.getJSON("/random_suggestions", function (data) {
-                // Mettre à jour la suggestion sur la page avec une classe spécifique
-                var suggestionHTML = '<div class="suggestion-item suggestion-in-circle">' +
-                    '<img src="' + data.img_link + '" alt="' + data.card_name + '">' +
-                    '<span class="card-name">' + data.card_name + '</span>' +
-                    '<span class="set-info">' + data.set_name + ' - ' + data.bloc_name + '</span>' +
-                    '</div>';
-
-                // Ajoutez l'élément au conteneur des suggestions
-                $('#suggestions-container2').html(suggestionHTML);
-            });
-        }
-
-        $(document).on('click', '.suggestion-item', function () {
-            var selectedImageLink = $(this).find('img').attr('src');
-            var pokemonName = $(this).find('.card-name').text();
-
-            // Redirigez vers la page results.html avec les données du Pokémon sélectionné
-            window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName;
-        });
-
-            $("#search-icon").on('click', function () {
-                var searchIcon = $("#search-icon");
-                var container = $(".container");
-                var searchContainer = $(".search-form");
-
-                gsap.to(searchIcon, { scale: 1.2, duration: 0.3 });
-                gsap.to(container, { x: -300, duration: 0.3 });
-                searchContainer.css('display', (searchContainer.css('display') === 'none') ? 'flex' : 'none');
             });
 
             box.on('mouseenter', function () {
@@ -135,9 +69,38 @@
                     searchContainer.css('display', 'none');
                 }
             });
+
+            $(document).on('click', '.suggestion-item', function () {
+                var selectedImageLink = $(this).find('img').attr('src');
+                var pokemonName = $(this).find('.card-name').text();
+                window.location.href = "{{ url_for('pokemon_details', pokemon_name='') }}" + pokemonName + "?selectedImageLink=" + selectedImageLink;
+            });
         });
-    
-        
+
+        function updateSuggestions(suggestions) {
+            var suggestionsContainer = $("#suggestions-container");
+            suggestionsContainer.empty();
+
+            $.each(suggestions, function (index, suggestion) {
+                var suggestionHTML = '<div class="suggestion-item">' +
+                    '<img src="' + suggestion.img_link + '" alt="' + suggestion.card_name + '">' +
+                    '<span class="card-name">' + suggestion.card_name + '</span>' +
+                    '<span class="set-info">' + suggestion.set_name + ' - ' + suggestion.bloc_name + '</span>' +
+                    '</div>';
+                suggestionsContainer.append(suggestionHTML);
+            });
+        }
+
+        function updateRandomSuggestion() {
+            $.getJSON("/random_suggestions", function (data) {
+                var suggestionHTML = '<div class="suggestion-item suggestion-in-circle">' +
+                    '<img src="' + data.img_link + '" alt="' + data.card_name + '">' +
+                    '<span class="card-name">' + data.card_name + '</span>' +
+                    '<span class="set-info">' + data.set_name + ' - ' + data.bloc_name + '</span>' +
+                    '</div>';
+                $('#suggestions-container2').html(suggestionHTML);
+            });
+        }
     </script>
 </head>
 
@@ -151,10 +114,7 @@
     <div id="background-container">
         <div class="background-image" style="background-image: url('https://digwallpapers.com/wallpapers/full/9/2/c/71534-1920x1200-pokemon-tcg-wallpaper-image-desktop-hd.jpg');"></div>
         <div class="background-image" style="background-image: url('https://i.redd.it/extended-card-art-wallpapers-part-3-including-a-dual-v0-bjk6brsi9gob1.jpg?width=3840&format=pjpg&auto=webp&s=cf2d6cdb345ae1212f6201ee95a2e97d42aae251');"></div>
-        
     </div>
-    
-
 
     <div class="container">
         <h1>Suivez le prix de votre carte !</h1>
@@ -168,21 +128,18 @@
             </div>
         </form>
 
-        <!-- Conteneur des suggestions -->
         <div id="suggestions-container"></div>
-       
-
     </div>
 
+    <div id="break-line"></div>
+
     <div id="nouvelle-section-blanche">
-        <img src="https://i.redd.it/g7bsmlohztva1.png" alt="Description de l'image">
+        <img src="https://i.redd.it/g7bsmlohztva1.png" alt="Description de l'image" style="width: 100%; height: auto; display: block; filter: blur(10px);">
         <div id="texte-sur-image">
-            <h1>Explorer des cartes <br> Inconnues!</h1>
+            <h1>Explorer des cartes inconnues!</h1>
         </div>
-        
         <div id="espace-suggestions"></div>
         <div id="suggestions-container2"></div>
-
     </div>
 
 </body>
