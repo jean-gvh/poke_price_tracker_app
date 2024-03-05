@@ -14,14 +14,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/jquery.cycle2.min.js"></script>
     
+    
 
     <script>
         $(document).ready(function () {
 
+            
+
             var loadedSuggestions = [];  // Tableau pour stocker les suggestions chargées 
 
             
-            
+
             for (var i = 0; i < 8; i++) {
                 updateRandomSuggestions(loadedSuggestions);
             }
@@ -139,36 +142,6 @@
 
         
     } 
-
-
-
-    // Fonction pour gérer l'animation lorsque la deuxième section devient visible
-    function handleScrollAnimation() {
-        var windowHeight = $(window).height();
-        var scrollPosition = $(window).scrollTop();
-        var section2Offset = $('#nouvelle-section-blanche').offset().top;
-
-        if (scrollPosition > section2Offset - windowHeight + 100) {
-            // La deuxième section est visible, déclencher une animation
-            animateSection2();
-        }
-    }
-
-    // Appeler la fonction pour la première fois
-    handleScrollAnimation();
-
-    // Appeler la fonction à chaque fois que l'utilisateur fait défiler la page
-    $(window).on('scroll', function () {
-        handleScrollAnimation();
-    });
-
-    // Fonction pour l'animation de la deuxième section
-    function animateSection2() {
-        // Utilisez GSAP pour créer votre animation ici
-        gsap.from('#suggestions-container2', { opacity: 0, y: 100, duration: 1, ease: 'power3.out' });
-    }
-
-
 
         
     </script>
