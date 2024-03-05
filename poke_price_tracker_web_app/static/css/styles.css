@@ -222,7 +222,7 @@ h1 {
     position: absolute;
     top: 50%; /* Ajustez la position verticale du texte */
     left: 20%; /* Ajustez la position horizontale du texte */
-    transform: translateY(-90%) translateX(-10%);
+    transform: translateY(-220%) translateX(-3%);
     color: #fff; /* Couleur du texte */
    
     text-align: left;
@@ -247,8 +247,8 @@ h1 {
 #suggestions-container2 {
     position: absolute;
     top: 10%; /* Ajustez la position verticale selon vos besoins */
-    left: 50%; /* Ajustez la position horizontale selon vos besoins */
-    transform: translateX(-22%);
+    left: 10%; /* Ajustez la position horizontale selon vos besoins */
+    
     width: 80%; /* Ajustez la largeur selon vos besoins */
     height: 80%; /* Ajustez la hauteur selon vos besoins */
     overflow: hidden;
@@ -282,13 +282,29 @@ h1 {
     display: block;
     margin-top: 2px;  /* Ajustez cette valeur selon vos préférences */
     margin-bottom: 1px;
-    font-size: 16px; /* Taille de police pour le nom de la carte */
+    font-size: 15px; /* Taille de police pour le nom de la carte */
 }
 
 .suggestion-item .set-info {
     display: block;
-    margin-top: 8px;  /* Ajustez cette valeur selon vos préférences */
+    margin-top: 1px;  /* Ajustez cette valeur selon vos préférences */
     margin-bottom: 1px;
     font-size: 12px; /* Taille de police pour les informations sur le set et le bloc */
     color: #888;
+} 
+
+
+.suggestions-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.suggestions-row {
+    display: flex;
+    justify-content: center;
+}
+
+.suggestion-item {
+    margin: 0 10px; /* Ajustez la marge selon vos préférences */
 }

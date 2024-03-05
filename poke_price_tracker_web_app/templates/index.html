@@ -13,10 +13,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/theme.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/jquery.cycle2.min.js"></script>
+    
 
     <script>
         $(document).ready(function () {
-            updateRandomSuggestion();
+
+            var loadedSuggestions = [];  // Tableau pour stocker les suggestions chargées 
+
+            
+            
+            for (var i = 0; i < 8; i++) {
+                updateRandomSuggestions(loadedSuggestions);
+            }
+
             var currentIndex = 0;
             var totalImages = $(".background-image").length;
             var box = $(".box");
@@ -91,16 +100,77 @@
             });
         }
 
-        function updateRandomSuggestion() {
-            $.getJSON("/random_suggestions", function (data) {
-                var suggestionHTML = '<div class="suggestion-item suggestion-in-circle">' +
-                    '<img src="' + data.img_link + '" alt="' + data.card_name + '">' +
-                    '<span class="card-name">' + data.card_name + '</span>' +
-                    '<span class="set-info">' + data.set_name + ' - ' + data.bloc_name + '</span>' +
-                    '</div>';
-                $('#suggestions-container2').html(suggestionHTML);
-            });
+        function updateRandomSuggestions(loadedSuggestions) {
+                $.getJSON("/random_suggestions", function (data) {
+                    loadedSuggestions.push(data);  // Ajouter la suggestion chargée au tableau
+
+                    if (loadedSuggestions.length === 8) {
+                        // Toutes les suggestions sont chargées, procédez à l'affichage
+                        displaySuggestions(loadedSuggestions);
+                    }
+                });
+            } 
+
+            function displaySuggestions(loadedSuggestions) {
+        var allSuggestionsHTML = '';
+
+        for (var i = 0; i < 8; i++) {
+            var data = loadedSuggestions[i];  // Utiliser les données à partir du tableau
+            var suggestionHTML = '<div class="suggestion-item">' +
+                '<img src="' + data.img_link + '" alt="' + data.card_name + '">' +
+                '<span class="card-name">' + data.card_name + '</span>' +
+                '<span class="set-info">' + data.set_name + ' - ' + data.bloc_name + '</span>' +
+                '</div>';
+
+            allSuggestionsHTML += suggestionHTML;
         }
+
+        // Sélectionnez la première ligne de suggestions
+        var suggestionsRow1 = $("#suggestions-row-1");
+
+        // Sélectionnez la deuxième ligne de suggestions
+        var suggestionsRow2 = $("#suggestions-row-2");
+
+        // Ajoutez toutes les suggestions à la première ligne
+        suggestionsRow1.html(allSuggestionsHTML);
+
+        // Après l'ajout de toutes les suggestions à la première ligne, sélectionnez toutes les suggestions
+        var allSuggestions = suggestionsRow1.children();
+
+        
+    } 
+
+
+
+    // Fonction pour gérer l'animation lorsque la deuxième section devient visible
+    function handleScrollAnimation() {
+        var windowHeight = $(window).height();
+        var scrollPosition = $(window).scrollTop();
+        var section2Offset = $('#nouvelle-section-blanche').offset().top;
+
+        if (scrollPosition > section2Offset - windowHeight + 100) {
+            // La deuxième section est visible, déclencher une animation
+            animateSection2();
+        }
+    }
+
+    // Appeler la fonction pour la première fois
+    handleScrollAnimation();
+
+    // Appeler la fonction à chaque fois que l'utilisateur fait défiler la page
+    $(window).on('scroll', function () {
+        handleScrollAnimation();
+    });
+
+    // Fonction pour l'animation de la deuxième section
+    function animateSection2() {
+        // Utilisez GSAP pour créer votre animation ici
+        gsap.from('#suggestions-container2', { opacity: 0, y: 100, duration: 1, ease: 'power3.out' });
+    }
+
+
+
+        
     </script>
 </head>
 
@@ -139,7 +209,12 @@
             <h1>Explorer des cartes inconnues!</h1>
         </div>
         <div id="espace-suggestions"></div>
-        <div id="suggestions-container2"></div>
+        <div id="suggestions-container2" class="suggestions-container">
+            <!-- Première ligne de suggestions -->
+            <div id="suggestions-row-1" class="suggestions-row"></div>
+            <!-- Deuxième ligne de suggestions -->
+            <div id="suggestions-row-2" class="suggestions-row"></div>
+        </div>
     </div>
 
 </body>
